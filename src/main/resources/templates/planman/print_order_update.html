@@ -1,0 +1,100 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+<script src="/jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="/jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!--引用对应的语言包 -->
+<script src="/jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/default/easyui.css">
+<TITLE>需求计划明细</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<script type="text/javascript">
+	
+	
+
+	function updateOrder(){
+		$.ajax({
+			method:'post',
+			url:'/updateOrder',
+			data:{
+				id:$("#id").text(),
+				amount:$("#amount").val(),
+				unitPrice:$("#unitPrice").val(),
+				remark:$("#remark").val()
+			},
+			success:function(data){
+				alert("修改成功！");
+				
+			},
+			error:function(){
+				alert("修改失败");
+			}
+		});
+	}
+
+</script>
+<LINK href="css/style.css" rel=stylesheet>
+<META content="MSHTML 6.00.2900.5626" name=GENERATOR></HEAD>
+<BODY>
+<form action="">
+<TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0 width="100%" 
+bgColor=#336699 borderColorLight=#006699 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=1 cellPadding=3 width="100%" border=0 th:object="${order}">
+        <TBODY>
+        <TR bgColor=#ffffff>
+          <TD align=middle width="100%" bgColor=#ffffff colSpan=20 
+            height=22><B>
+            <H2><FONT color=#0070c0>需求计划1</B> <A 
+            onclick="window.open('../help/Help.asp?Value=需求计划1','child','status=NO,scrollbars=yes,toolbar=no,menubar=no,location=no,left=200,top=100,width=700,height=400')" 
+            href="javascript:void(null)"><IMG alt=帮助 
+            src="css/help_a.gif" border=0></A> 
+</FONT></H2></TD></TR>
+        <TR class=t1>
+          <TD noWrap width="20%">需求计划编号</TD>
+          <TD class=t2 noWrap id ="id" th:text="${order.id}"></TD>
+          <TD noWrap>产品编码</TD>
+          <TD class=t2 noWrap id  ="materialCode" th:text="${order.materialCode}">W64001005001</TD>
+        </TR>
+        <TR class=t1>
+          <TD noWrap width="20%">产品名称</TD>
+          <TD class=t2 noWrap id  ="materialName" th:text="${order.materialName}">晶振(HC-49U-500M-0.005%)</TD>
+          <TD noWrap>数量</TD>
+          <TD class=t2 noWrap ><input type="text" id ="amount" th:value="${order.amount}"></TD>
+        </TR>
+        <TR class=t1>
+          <TD noWrap>计量单位</TD>
+          <TD class=t2 noWrap id ="measureUnit" th:text="${order.measureUnit}">个</TD>
+          <TD noWrap>预算单价(元)</TD>
+          <TD class=t2 noWrap ><input type="text" id ="unitPrice" th:value="${order.unitPrice}"></TD>
+        </TR>
+        <TR class=t1>
+          <TD noWrap>开始交货期</TD>
+          <TD class=t2 noWrap id ="startDate" ><input type="text" th:value="${#dates.format(order.startDate, 'yyyy-MM-dd')}"></TD>
+          <TD noWrap>业务员</TD>
+          <TD class=t2 noWrap id ="author" th:text="${order.author}">杨春</TD>
+        </TR>
+        
+        <TR class=t1>
+          <TD noWrap>电子邮件</TD>
+          <TD class=t2 noWrap id ="email" th:text="${order.email}">yangchun@teg.cn</TD>
+          <TD noWrap width="20%">联系电话</TD>
+          <TD class=t2 noWrap id ="phone" th:text="${order.phone}">0733-8498057</TD></TR>
+        <TR class=t1>
+          <TD noWrap width="20%">联系传真</TD>
+          <TD class=t2 noWrap id ="fax" th:text="${order.fax}">0733-8498440</TD>
+          <TD noWrap width="20%">备注</TD>
+          <TD class=t2 noWrap ><input type="text" id ="remark" th:value="${order.remark}"></TD></TR>
+        
+       </TBODY></TABLE></TD></TR></TBODY></TABLE>
+       </form>
+       <BR>
+<CENTER>
+<INPUT onclick="updateOrder()" type="button" value="修改">
+<INPUT onclick=javascript:window.close() type="button" value="关闭">
+</CENTER></BODY></HTML>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<meta http-equiv="Cache-Control" content="no-store"/>
+		<meta http-equiv="Pragma" content="no-cache"/>
+		<meta http-equiv="Expires" content="0"/>
+<script src="jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!-- 引用对应的语言包 -->
+<script src="jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="jquery-easyui-1.6.3/themes/default/easyui.css">
+<title>物资采购系统登录页面</title>
+
+<script type="text/javascript">
+	$(function (){
+		$("#name").validatebox({
+			required:true,//必填
+			missingMessage:'姓名是必填项',//未填写的提示信息
+			validType:["length[2,12]"],//要求的规则
+			invalidMessage:'姓名长度不合理'//校验不通过提示信息
+		});
+		
+		$("#pwd").validatebox({
+			required:true,//必填
+			missingMessage:'密码是必填项',
+			validType:["length[6,12]"],//要求的规则
+			invalidMessage:'密码长度不合理'//校验不通过提示信息
+		});
+		
+		 //js渲染easyui对话框对象
+		 $('#mydialog').dialog({    
+			    title: '窗口',    
+			    width: 400,    
+			    height: 200,    
+			    closed: false,    
+			    cache: false,    
+			    maximizable:true,//最大化按钮
+			    buttons:"#div1",//窗口底部按钮
+			    modal: true,   //打开的是否是 模式窗口
+			    onClose:function(){
+			    	alert("你关闭了窗口");
+			    }
+			}); 
+		 $('#cancelBtn').click(function(){
+			 $('#name').val="";
+			 $('#pwd').val="";
+		 });
+		 
+		 $('#loginBtn').click(function(){
+			 $('#myform').submit();
+		 });
+		 
+	})
+		
+</script>
+</head>
+<body>
+	<div id="mydialog"	>
+		<form id="myform"  method="post" action="/login1">
+		<p>用户名:<input type="text" name="loginId" id="name" /></p>
+		<p>密码:<input type="password" name="password" id="pwd"/></p>
+		<p><a id="loginBtn" href="#" class="easyui-linkbutton" >登录</a>
+	  		<a id="cancelBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>  
+		</p>
+		</form>
+	</div>
+</body>
+</html>

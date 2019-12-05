@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		<meta http-equiv="Cache-Control" content="no-store"/>
+		<meta http-equiv="Pragma" content="no-cache"/>
+		<meta http-equiv="Expires" content="0"/>
+<script src="jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!-- 引用对应的语言包 -->
+<script src="jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="jquery-easyui-1.6.3/themes/default/easyui.css">
+
+<script type="text/javascript">
+	$(function(){
+		$("#menus").tree({
+			url:'/menus',
+			method:'get',
+			onClick:function(node){
+				
+				 $("#zj").attr("src",node.linkUrl);
+			}
+		});
+	})
+</script>
+</head>
+<body class="easyui-layout">   
+    <div data-options="region:'north',split:false,href:'gohead'" style="height:21px;">
+    </div>          
+    <div data-options="region:'west',split:false" style="width:200px;">
+		<ul id="menus"></ul>
+	</div>   
+    <div data-options="region:'center'" style="padding:5px;background:#eee;">
+    	<iframe id="zj" src='mainRequire.html' width="100%" height="100%"></iframe>
+    </div>   
+</body>  
+</html>

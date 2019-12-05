@@ -1,0 +1,295 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<script src="/jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="/jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!--引用对应的语言包 -->
+<script src="/jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/default/easyui.css">
+<meta http-equiv="Content-Language" content="zh-cn">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="css/style.css">
+<script Language="JavaScript" src="css/pub_Calendar.js"></script>
+<title>编制采购计划</title>
+<script type="text/javascript">
+	$(function (){
+		
+	});
+ 
+	function abc(){
+		var va =$("#pMethod").val();
+		if(va == "公开求购"){
+			$.ajax({
+				method:'post',
+				url:'/findSupport',
+				success:function(){
+					console.log("成功添加供应商");
+				},
+				error:function(){
+					alert("ajax失败了");
+				}
+			});
+		}else{
+			
+			/* 
+			var setting	={
+					url:'/finddxSupport',
+					type:'post',
+					dataType:'json',
+					
+					success:function(data){
+						var str="";
+        				 //遍历数据
+       				$.each(data,function(index,element){ 
+       					//alert(element.id);
+       					 str+="<tr class='t2'><td align='center' class='hd' hidden><input onclick='fz("+element.id+")' type='radio'></td>";
+       					 str+="<td align='center'>"+element.supp_name+"</td><tr/>";
+       				 })  
+						
+						/* var tr = "<tr class='t2' >";//添加行
+				        tr +="<td align=center><input type='checkbox' name='ids' value="+id +" checked='checked' ></td>";//复选框
+				        tr +="<td >" +id + "</td>";//序号
+				        tr += "<td >" +data.materialNum +" <br></td>";//产品编码
+				        tr += "<td >"+data.materialName +"<br></td></tr>";//产品名称
+				        $("#table1").append(tr); 
+					},
+					error:function(){
+						alert('jQuery ajax出错了~');
+					}
+			};
+			$.ajax(setting); */
+		}
+	}
+	
+	function addPur(){
+		var ches = document.getElementsByName("che");
+		var ids = [];
+		for(var i=0;i<ches.length;i++){
+			if(ches[i].checked){
+				ids[i] = ches[i].val();
+			}
+		}
+		$.ajax({
+			method:'post',
+			url:'/addStock',
+			data:{
+				stockNum:$("#stockNum").text(),
+				stockName:$("#stockName").val(),
+				author:$("#author").val(),
+				authorId:$("#authorId").val(),
+				stockType:$("#pMethod").val(),
+				budget:$("#budget").val(),
+				orderids:ids
+			},
+			
+			success:function(data){
+								
+				alert("保存成功，请选择下一条要保存的数据！");
+			},
+			error:function(){
+				alert("添加失败");
+			}
+		});
+	}
+</script>
+</head>
+<body>
+<center>
+
+    <h2><font color=#0070C0>编制采购计划</font></h2>
+
+ <form name="form" action="Project_Save.asp" method="post">
+ 
+<TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="100%"  bgColor=#336699 borderColorLight=#006699 border=0>
+<tr>
+<td>
+<table cellpadding="3" cellspacing="1" border="0" width="100%" th:object="${stock}">
+
+ <tr>
+       <tr class="t1">
+<td>采购计划编号</td>
+      	<td th:text="${stock.stockNum}" id="stockNum">
+      	1000201001251787
+      	<input type="hidden" name="p_input" value="1000201001251787">      	</td>
+<td><font color=red>采购计划名称</font></td>
+      <td>
+      <input type="text" id="stockName" size="20" maxlength="100" value="20020055100109"  Chk=1 alt="请输入采购计划名称。">      </td>      
+</tr>
+       <tr class="t1" >
+<td>公司名称</td>
+      	<td>
+        株洲南车时代电气股份有限公司
+      	<input type="hidden" name="p_input" value="1000">      	</td>
+<td>编制人</td>
+       <td>
+       <input type="hidden" name="p_input" size="20"  readonly  maxlength="100" id="author" th:value="${stock.author}"  Chk=1 > 
+       <input type="text" name="p_input" size="20"  readonly  maxlength="100" id="authorId" th:value="${stock.authorId}"  Chk=1 >
+             </td>
+</tr>
+       <tr class="t1" >
+<td>预算金额(元)</td>
+       <td>
+       <input type="text" id="budget" name="p_input" size="20" maxlength="20" value=""  onKeyPress="check_num_dot()" Chk=3>       </td>
+<td>采购计划编制时间</td>
+       <td>2019/11/27</td>
+</tr>
+</table></td></tr></table>
+
+<TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="100%"  bgColor=#336699 borderColorLight=#006699 border=0>
+<tr>
+<td>
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+
+    <tr class="t1">
+    <td nowrap align="center"><input type="checkbox"></td>
+    <td nowrap align="center">序号</td>
+    <td nowrap align="center">物资编码</td>
+    <td nowrap align="center">物资名称</td>
+    <td nowrap align="center">数量</td>
+    
+    <td nowrap align="center">计量<br>单位</td>
+    <td nowrap align="center">交货期</td> 
+    
+       <td nowrap align="center">协议价格<br>（元）</td>
+    
+    <td nowrap align="center">预算总金额<br>（元）</td>
+    <td nowrap align="center">计划价<br>（元/不含税）</td>
+    <!--
+    <td nowrap align="center">录入详细<br>交货情况</td>
+    -->
+    </tr>
+ 
+       <tr class="t2" th:each="li : ${list}">
+       <td align=center><input th:value="${li.id}" name="che" type="checkbox" checked="checked"></td>
+       <td align=center th:text="${li.id}"></td>
+       <td th:text="${li.materialCode}">W64001005001<br></td>
+       <td th:text="${li.materialName}"><br></td>
+       <td align=right  th:text="${li.amount}">222<br></td>
+       
+       <td align=center th:text="${li.measureUnit}">个<br></td>
+       <td align=center th:text="${#dates.format(li.startDate,'yyyy-MM-dd')}">2010/01/08<br></td>
+       
+       <td nowrap align="center" ><br></td>       
+       
+       <td align=right >84360<br></td>
+       <td align=right th:text="${li.sumPrice}"><br></td>
+       <!--
+       <td align="center"><a href="javascript:openwindown('../Project/Project_Delivery.asp?p_projno=1000201001251787&p_orderno=1000201011133266&p_ordernum=1')"><img src="../images/Open.gif" border="0" WIDTH="18" HEIGHT="12"></a></td>
+       -->
+       </tr>
+ 
+</table></td></tr></table>
+
+<TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="100%"  bgColor=#336699 borderColorLight=#006699 border=0>
+<tr>
+<td>
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+
+ <tr  class="t1" >
+ <td width=15% align="center"><font color=red>采购方式</font></td>
+ <td colspan=3>
+
+    <SELECT id="pMethod" Chk=1 alt="请选择采购方式。" onselect="abc()">
+          <OPTION value="公开求购" >公开求购</OPTION>
+          <OPTION value="定向询价" >定向询价</OPTION>
+    </SELECT>
+
+</td>
+</tr>
+
+  <input type="hidden" name="p_orderno" value="1000201011133266">
+<tr  class="t1">
+<td>满足条件的供应商列表</td>
+
+<td align="center" colspan="3">
+<div id="gkqg" style="display:block">
+  <TABLE style="LINE-HEIGHT: 30px" cellSpacing=1 cellPadding=0     width="100%"  bgColor=#336699 borderColorLight=#006699 border=0>
+	<tr class="t1">
+		<th>
+			<font color="black">供应商名称</font>		</th>
+	</tr>
+	<tr class="t2" th:each="supplier : ${sList}" th:id="'s_'+${supplier.id}">
+		<td>
+			<input type="hidden" th:value="${supplier.id}" >
+			<div align="center" ><b th:text = "${supplier.company}"></b>		  </div></td>
+	</tr>
+	<!-- <tr class="t2">
+		<td>
+			<div align="center">多又好			  </div></td>
+	</tr> -->
+  </table>
+  </div>
+  
+  <div id="dxqg" style="display:none">
+  <table>
+ <tr  class="t1" >
+<td align="center">
+<b>可选</b>
+<br>
+<select name="p_gys_all" size=15 style="width=160px" multiple>
+
+   <OPTION value="12" >北京康特电子有限公司</OPTION>
+
+</SELECT>
+<td align="center" vAlign=center>
+
+    <input type=button name="add" value="添加" onclick=Add(document.form.p_gys_all,document.form.p_gys_sel)>
+    <p>
+    <input type=button name="del" value="删除" onclick=Remove(document.form.p_gys_sel)>
+
+</td>
+<td align="center">
+<b>已选</b>
+<br>
+<select name="p_gys_sel" size=15 style="width=160px" multiple>
+
+</SELECT>  
+</td>
+</tr>
+</table>
+</div>
+ 
+</td>
+
+<tr  class="t1" >
+<td width=15% align="center" nowrap>说明：<br>（400字以内）</td>
+<td colspan=3>
+<TEXTAREA NAME="p_input" ROWS=3 COLS=77 style="width:100%">
+
+</TEXTAREA>
+</td>
+</tr>
+
+</table></td></tr></table>
+
+<input type="hidden" name="p_projno" value="1000201001251787">
+<input type="hidden" name="p_ftype" value="2">
+<input type="hidden" name="p_type" value="">
+<input type="hidden" name="p_listtype" value="">
+<input type="hidden" name="p_title" value="">
+<input type="hidden" name="p_Item" value="">
+<input type="hidden" name="p_status" value="">
+<input type="hidden" name="p_stocktype" value="">
+<input type="hidden" name="page" value="">
+
+<br>
+<input type="button" value="确定" onClick="addPur()">
+<input type="button" value="重设" onClick="form.reset()">
+
+      <input type="button" value="取消" onClick="window.location='Order_wbxjfa_list.htm'">
+
+</form>
+<form name="form1" action="../Demand/xjfatz_gysxx.asp" method="post"target=_new>
+<input type="hidden" name="p_suppsql" value="select * from Tb_ProjectSupp_Tmp where strProjCode='1000201001251787'">
+</form>
+</center>
+</body>
+</html>
+
+
+

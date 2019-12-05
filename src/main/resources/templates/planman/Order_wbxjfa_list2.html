@@ -1,0 +1,123 @@
+<HTML xmlns:th="http://www.thymeleaf.org">
+<HEAD>
+<TITLE>未编采购计划的需求计划一览表</TITLE>
+<script src="/jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="/jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!--引用对应的语言包 -->
+<script src="/jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/default/easyui.css">
+
+<META http-equiv=Content-Language content=zh-cn>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="MSHTML 6.00.2900.5626" name=GENERATOR>
+<META content=FrontPage.Editor.Document name=ProgId><LINK 
+href="css/style.css" rel=stylesheet>
+
+<script type="text/javascript">
+	$(function (){
+		//初始化数据表格
+		$("#dg").datagrid({
+			
+			method:"get",
+			url:'/findwbzOrders',
+			columns:[
+				[
+				{
+					title:'选择',
+					field:'xz',
+					width:100,
+					checkbox:true
+				},
+				{
+					title:'序号',
+					field:'id',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'物资编码',
+					field:'materialCode',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'物资名称',
+					field:'materialName',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'数量',
+					field:'amount',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'需求时间',
+					field:'startDate',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'物资类别',
+					field:'test',
+					width:100,
+					align:'center'
+				}
+				
+			]],
+			pagination:true,//分页工具
+			pageSize:3,//页面显示几条
+			pageNumber:1,//显示第几页
+			pageList:[3,6,9,12,15]
+		});
+		
+	})
+	function check(){
+		var re = true;
+		var ids =[];
+		var obj = $("#dg").datagrid("getSelections");
+		var len = obj.length;
+		if(len ==0){
+			alert("没有选中数据，请选择要编写采购计划的需求");
+		}else if(len==1){
+			ids[0] = obj[0].id;
+			 location.href="/formationtoPlan?ids="+ids;
+		}else{
+			var content =obj[0].materialCode;
+			 for(var i = 0;i<len;i++){
+				if(obj[i].materialCode != content){
+					alert("所选物资不是同一物资，不能一起编制采购计划");
+					re = false;
+					break;
+				}
+				ids[i]=obj[i].id;	
+				
+				
+			}
+			 if(re){
+				 location.href="/formationtoPlan?ids="+ids;
+			 }
+			 
+		}
+	}
+</script>
+
+</HEAD>
+<BODY>
+<div>
+	<h1 align="center">未编采购计划的需求计划一览表</h1>
+	<div align="center">
+		<table id="dg" class="easyui-datagrid" style="width:400px,align:center;"></table>
+	</div>
+	<P align=center>
+  <INPUT onclick="check()" type=button value=编制采购计划 name=upd id="dd"> <INPUT onClick=" javascript:history.back()" type=button value=返回 name=goback> 
+</P>
+</div>
+</BODY>
+
+</HTML>

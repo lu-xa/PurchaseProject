@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/jquery-easyui-1.6.3/jquery.min.js" charset="utf-8"></script>
+<!-- easyui依赖的js -->
+<script src="/jquery-easyui-1.6.3/jquery.easyui.min.js" charset="utf-8"></script>
+<!--引用对应的语言包 -->
+<script src="/jquery-easyui-1.6.3/locale/easyui-lang-zh_CN.js" charset="utf-8"></script>
+<!-- 引用图标样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/icon.css">
+<!-- 引用默认的样式 -->
+<link rel="stylesheet" href="/jquery-easyui-1.6.3/themes/default/easyui.css">
+<script type="text/javascript">
+	
+	
+
+	$(function (){
+		
+		$("#next").click(function(){
+			location.href = "/toAddOrder?id="+$("#wzname").val();
+		});
+		
+		
+		//初始化数据表格
+		$("#tt").datagrid({
+			method:'get',
+			url:'/findAllMaterial',
+			columns:[[
+				{
+					title:'序号',
+					field:'id',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'产品编码',
+					field:'materialNum',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'产品名称',
+					field:'materialName',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'计量单位',
+					field:'materialUnit',
+					width:100,
+					align:'center'
+				},
+				{
+					title:'产品类别',
+					field:'materialType',
+					width:100,
+					align:'center'
+				}
+			]],
+			pagination:true,//分页工具
+			pageSize:3,//页面显示几条
+			pageNumber:1,//显示第几页
+			pageList:[3,6,9,12,15]
+		})
+		
+		
+		 $.ajax({
+			type:"get",
+			dataType:"json",
+			url:"/findAllType",
+			success:function(data){
+				 var result = "<option>请选择物资类别</option>"
+					       $.each(data, function(i, item) {
+					       result +="<option value='"+item.codeId+"'>"+item.name+"</option>";
+					       });
+					       $("#typename").html('');
+					         $("#typename").append(result);
+					    
+					
+			}
+		});
+		
+	$("#typename").change(function () {
+		//var selectedIndex = document.getElementById("typename").selectedIndex;
+		//materialType
+		  $.ajax({
+		           type: "get",
+		           dataType: "json",
+		           url: "/findByType",
+		           data: {typeId:$("#typename").val()},
+		           success: function(data){
+
+		          var result = "<option>请选择物资类别</option>"
+		          $.each(data, function(i, item) {
+		          result +="<option value='"+item.id+"'>"+item.materialName+"</option>";
+		          });
+		
+		          $("#wzname").html(' ');
+		            $("#wzname").append(result);
+		            
+		         
+		           }
+		       });
+		  }); 
+	}) 
+/* <table id="tt" class="easyui-datagrid" >   
+    	</table> */
+</script>
+
+
+<!-- <script type="text/javascript">
+	function toAdd(){
+		location.href = "/toAddOrder?id=$("#wzname").val";
+	}
+</script> -->
+</head>	
+
+<body>
+<form action="">
+	<TABLE width="90%" align=center border=0>
+	  <TBODY>
+		  <TR>
+		    <TD align=middle>
+		    <FONT 
+		  		color=red>选择物资</FONT>====&gt;录入需求计划====&gt;需求计划确认
+		  	</TD>
+		  </TR>
+		</TBODY>
+	</TABLE>
+
+	<div align="center">
+		<table id="tt" class="easyui-datagrid" width="400px" height="300px"  >   
+	    </table>
+	</div>
+	
+	<div style="text-align:center;width:300px,margin-top:10px;">
+		 请先选择物资，然后点击：
+		 <!-- <A 
+            href="javascript:window.document.location='Order_newform.htm'"><FONT 
+            size=3><U>下一步</U>--></br></br></br> 
+        <a id="next" href="#">下一步</a>    
+            
+		<!-- 这里是选择物资类别 -->
+		<select id="typename" >
+			<option>请选择物资类别</option>
+		</select>
+		<!-- 这里是选择具体的物资 -->
+		<select id="wzname" >
+			<option>请选择具体物资</option>
+		</select>
+	</div>
+	
+</form>	
+</body>
+	
+</html>
+
+
+
